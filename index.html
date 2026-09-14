@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CGPA Booster - calculate CGPA, plan target scores, analyze subjects and track academic progress.">
+  <title>CGPA Booster | Academic Performance Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">🎓</div>
+        <div>
+          <h1>CGPA Booster</h1>
+          <p>Plan smarter. Improve faster.</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button>
+        <button class="btn btn-outline" id="clearAllBtn">Reset Data</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div>
+          <span class="eyebrow">ACADEMIC PERFORMANCE</span>
+          <h2>Turn your CGPA goal into an action plan.</h2>
+          <p>Calculate your performance, set a target, identify weak subjects and track the SGPA you need.</p>
+        </div>
+        <div class="hero-badge">
+          <span>Current Goal</span>
+          <strong id="heroTarget">8.50</strong>
+          <small>Target CGPA</small>
+        </div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-icon purple">📚</div>
+          <div><span>Current CGPA</span><strong id="currentCgpa">0.00</strong><small id="currentStatus">Add subjects to begin</small></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon blue">🎯</div>
+          <div><span>Target CGPA</span><strong id="targetCgpaDisplay">8.50</strong><small id="targetGap">Set your target</small></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon green">⚡</div>
+          <div><span>Required SGPA</span><strong id="requiredSgpa">—</strong><small>For next semester</small></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon orange">🏆</div>
+          <div><span>Total Credits</span><strong id="totalCredits">0</strong><small id="subjectCount">0 subjects</small></div>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel calculator-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-label">01 · CALCULATOR</span>
+              <h3>Subject Performance</h3>
+            </div>
+            <button class="btn btn-primary" id="addSubjectBtn">＋ Add Subject</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Credits</th>
+                  <th>Marks %</th>
+                  <th>Grade</th>
+                  <th>Grade Point</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="subjectTableBody"></tbody>
+            </table>
+          </div>
+
+          <div class="empty-state" id="emptyState">
+            <div>📝</div>
+            <h4>No subjects added yet</h4>
+            <p>Add your subjects, credits and marks to calculate your SGPA.</p>
+            <button class="btn btn-primary" id="emptyAddBtn">Add First Subject</button>
+          </div>
+
+          <div class="calculator-footer">
+            <div>
+              <span>Weighted Grade Points</span>
+              <strong id="weightedPoints">0.00</strong>
+            </div>
+            <div>
+              <span>Semester SGPA</span>
+              <strong id="sgpaResult">0.00</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel target-panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-label">02 · GOAL PLANNER</span>
+              <h3>Target CGPA</h3>
+            </div>
+            <span class="pill">Smart Plan</span>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              Current CGPA
+              <input type="number" id="plannerCurrent" min="0" max="10" step="0.01" placeholder="e.g. 7.20">
+            </label>
+            <label>
+              Completed Credits
+              <input type="number" id="completedCredits" min="0" step="1" placeholder="e.g. 80">
+            </label>
+            <label>
+              Target CGPA
+              <input type="number" id="plannerTarget" min="0" max="10" step="0.01" value="8.50">
+            </label>
+            <label>
+              Next Semester Credits
+              <input type="number" id="nextCredits" min="1" step="1" value="20">
+            </label>
+          </div>
+
+          <button class="btn btn-primary full" id="planBtn">Calculate Target Plan</button>
+
+          <div class="target-result" id="targetResult">
+            <div class="result-number" id="targetSgpaValue">—</div>
+            <div>
+              <strong>Required SGPA</strong>
+              <p id="targetMessage">Enter your completed credits and current CGPA.</p>
+            </div>
+          </div>
+
+          <div class="progress-block">
+            <div class="progress-heading"><span>Target progress</span><strong id="progressText">0%</strong></div>
+            <div class="progress-bar"><span id="progressBar"></span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="content-grid lower-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-label">03 · ANALYSIS</span>
+              <h3>Performance Overview</h3>
+            </div>
+          </div>
+          <div class="analysis-grid">
+            <div class="chart-card">
+              <div class="donut" id="donutChart">
+                <div><strong id="donutValue">0.00</strong><span>SGPA</span></div>
+              </div>
+              <p>Current semester performance</p>
+            </div>
+            <div class="grade-list" id="gradeList"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="section-label">04 · BOOSTER</span>
+              <h3>Improvement Plan</h3>
+            </div>
+            <span class="pill green-pill">Personalized</span>
+          </div>
+          <div class="suggestions" id="suggestions"></div>
+        </section>
+      </div>
+
+      <section class="panel planner-section">
+        <div class="panel-header">
+          <div>
+            <span class="section-label">05 · STUDY TRACKER</span>
+            <h3>Study Planner</h3>
+          </div>
+          <button class="btn btn-primary" id="addTaskBtn">＋ Add Task</button>
+        </div>
+
+        <div class="task-form" id="taskForm">
+          <input type="text" id="taskName" placeholder="Subject or study task">
+          <input type="number" id="taskHours" min="0.5" step="0.5" placeholder="Hours">
+          <select id="taskPriority">
+            <option value="High">High Priority</option>
+            <option value="Medium" selected>Medium Priority</option>
+            <option value="Low">Low Priority</option>
+          </select>
+          <button class="btn btn-primary" id="saveTaskBtn">Save</button>
+          <button class="btn btn-outline" id="cancelTaskBtn">Cancel</button>
+        </div>
+
+        <div id="tasksContainer" class="tasks"></div>
+      </section>
+
+      <footer>
+        <p>CGPA Booster · Built with HTML, CSS & JavaScript · Data stays in your browser.</p>
+      </footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
